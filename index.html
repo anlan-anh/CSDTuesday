@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trees, BT, and BST Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for smooth transitions and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Dark slate background */
+            color: #e2e8f0; /* Light text color */
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            box-sizing: border-box;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+            transform: scale(0.95); /* Slightly scale down when hidden */
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); /* Subtle gradient */
+            border-radius: 1.5rem; /* Rounded corners for the slide container */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Deeper shadow */
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1); /* Full scale when active */
+        }
+
+        .slide-content {
+            max-width: 80%; /* Constrain content width */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            color: #67e8f9; /* Cyan for headings */
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        p, ul, li {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: left; /* Align text left within content block */
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 2rem;
+            max-width: 700px; /* Max width for list items */
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        .reference {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 1rem;
+            color: #94a3b8; /* Slate gray for reference text */
+        }
+
+        .diagram-container {
+            margin-top: 2rem;
+            background-color: #334155; /* Darker background for diagrams */
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Specific styles for code snippet */
+        pre {
+            background-color: #1a202c; /* Darker background for code */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', monospace; /* Monospace font for code */
+            font-size: 1rem;
+            text-align: left;
+            max-width: 90%;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        code {
+            color: #a78bfa; /* Purple for code */
+        }
+
+        /* Styles for quiz options */
+        .option {
+            background-color: #2d3748; /* Darker background for options */
+            margin-bottom: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #4a5568; /* Lighter on hover */
+        }
+
+        .option.correct-answer {
+            background-color: #10B981; /* Green for correct */
+            color: #fff;
+            border: 2px solid #059669;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 2rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            p, ul, li {
+                font-size: 1rem;
+            }
+            .reference {
+                font-size: 0.8rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .slide-content {
+                max-width: 95%;
+            }
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+            .option {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container" class="relative w-screen h-screen flex items-center justify-center">
+
+        <div class="absolute top-4 right-4 p-2 bg-gray-800 rounded-lg shadow-lg z-50">
+            <img src="FPT.png" alt="FPT Logo" class="h-10 w-auto rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/80x40/0f172a/e2e8f0?text=Logo+Error';">
+        </div>
+
+        <div id="slide-0" class="slide active">
+            <div class="slide-content">
+                <h1 class="text-5xl md:text-6xl text-center mb-6 animate-fade-in-up">Trees, Binary Trees, and Binary Search Trees</h1>
+                <p class="text-2xl md:text-3xl font-semibold text-gray-300 mb-8 animate-fade-in-up delay-100">Definitions, Insertion, and Implementation</p>
+                <div class="text-xl md:text-2xl text-gray-400 leading-relaxed animate-fade-in-up delay-200">
+                    <p><strong>Group Members:</strong></p>
+                    <ul class="list-none p-0 m-0 text-center">
+                        <li>Nguyen Minh Triet</li>
+                        <li>Phan Bao Thang</li>
+                        <li>Le Truong An</li>
+                        <li>Huynh Kim Hue</li>
+                        <li>Huynh Minh Khang</li>
+                        <li>Pham Quoc Chi</li>
+                    </ul>
+                    <p class="mt-4"><strong>Instructor:</strong> DungLTP13</p>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-1" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-8 animate-fade-in-up">Table of Contents</h2>
+                <ul class="text-xl md:text-2xl text-gray-300 space-y-3 animate-fade-in-up delay-100">
+                    <li>General Trees: Definitions</li>
+                    <li>General Trees: Key Terms (Part 1)</li>
+                    <li>General Trees: Key Terms (Part 2) & Diagram</li>
+                    <li>Binary Trees (BT): Definitions & Properties</li>
+                    <li>Binary Search Trees (BST): Definition</li>
+                    <li>BST: Searching</li>
+                    <li>BST: Node Insertion</li>
+                    <li>BST: Implementation Overview: Node Structure</li>
+                    <li>BST: Implementation Overview: TreeMap & Methods</li>
+                    <li>Quick Quiz: Question 1</li>
+                    <li>Quick Quiz: Answer 1</li>
+                    <li>Quick Quiz: Question 2</li>
+                    <li>Quick Quiz: Answer 2</li>
+                    <li>Quick Quiz: Question 3</li>
+                    <li>Quick Quiz: Answer 3</li>
+                    <li>Thank You!</li>
+                </ul>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-2" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">General Trees - Definitions</h2>
+                <p class="text-xl md:text-2xl mb-4 animate-fade-in-up delay-100"><strong>Definition:</strong> A tree is an abstract data type storing elements hierarchically.</p>
+                <p class="text-xl md:text-2xl mb-6 animate-fade-in-up delay-200">Nodes have a parent-child relationship, except for the root (no parent).</p>
+            </div>
+            <span class="reference">Reference: Pages 308-311</span>
+        </div>
+
+        <div id="slide-3" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">General Trees - Key Terms (Part 1)</h2>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-100">Key Terms:</p>
+                <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-200">
+                    <li><strong>Root:</strong> Node without a parent.</li>
+                    <li><strong>Leaf (External Node):</strong> Node without children.</li>
+                    <li><strong>Internal Node:</strong> Node with at least one child.</li>
+                    <li><strong>Edges:</strong> Connect parent to child.</li>
+                </ul>
+            </div>
+            <span class="reference">Reference: Pages 308-311</span>
+        </div>
+
+        <div id="slide-4" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">General Trees - Key Terms (Part 2) & Diagram</h2>
+                <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-100">
+                    <li><strong>Ancestors/Descendants:</strong> Define lineage.</li>
+                    <li><strong>Depth:</strong> Number of ancestors (root depth = 0).</li>
+                    <li><strong>Height:</strong> Longest path from a node to a leaf; tree height is root's height.</li>
+                </ul>
+                <div class="diagram-container animate-fade-in-up delay-200">
+                    <h3 class="text-xl font-semibold mb-4 text-cyan-300">General Tree Diagram</h3>
+                    <svg width="300" height="200" viewBox="0 0 300 200" class="mx-auto">
+                        <circle cx="150" cy="30" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="150" y="35" text-anchor="middle" fill="#fff" font-size="12">A</text> <circle cx="80" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="80" y="105" text-anchor="middle" fill="#fff" font-size="12">B</text>
+                        <circle cx="220" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="220" y="105" text-anchor="middle" fill="#fff" font-size="12">C</text>
+
+                        <circle cx="40" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="40" y="175" text-anchor="middle" fill="#fff" font-size="12">D</text> <circle cx="120" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="120" y="175" text-anchor="middle" fill="#fff" font-size="12">E</text> <circle cx="180" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="180" y="175" text-anchor="middle" fill="#fff" font-size="12">F</text> <circle cx="260" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="260" y="175" text-anchor="middle" fill="#fff" font-size="12">G</text> <line x1="150" y1="45" x2="80" y2="85" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="150" y1="45" x2="220" y2="85" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="80" y1="115" x2="40" y2="155" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="80" y1="115" x2="120" y2="155" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="220" y1="115" x2="180" y2="155" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="220" y1="115" x2="260" y2="155" stroke="#a78bfa" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <span class="reference">Reference: Pages 308-311</span>
+        </div>
+
+        <div id="slide-5" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Binary Trees (BT) - Definitions & Properties</h2>
+                <p class="text-xl md:text-2xl mb-4 animate-fade-in-up delay-100"><strong>Definition:</strong> An ordered tree where each node has at most two children: a left child and a right child.</p>
+                <p class="text-xl md:text-2xl mb-6 animate-fade-in-up delay-200">Left child precedes the right child.</p>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-300">Properties:</p>
+                <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-400">
+                    <li><strong>Proper (Full) BT:</strong> Each node has 0 or 2 children.</li>
+                    <li>Max nodes at level d is $2^d$.</li>
+                    <li>Min height for n nodes is $\Omega(\log n)$ (specifically, height is at least $\lceil\log_2(n+1)\rceil-1$ for n nodes or $\log_2 n$ if leaves are at level h and n is number of leaves for a proper BT).</li>
+                </ul>
+                <div class="diagram-container animate-fade-in-up delay-500">
+                    <h3 class="text-xl font-semibold mb-4 text-cyan-300">Binary Tree Diagram</h3>
+                    <svg width="300" height="200" viewBox="0 0 300 200" class="mx-auto">
+                        <circle cx="150" cy="30" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="150" y="35" text-anchor="middle" fill="#fff" font-size="12">A</text> <circle cx="80" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="80" y="105" text-anchor="middle" fill="#fff" font-size="12">B</text>
+                        <circle cx="220" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="220" y="105" text-anchor="middle" fill="#fff" font-size="12">C</text>
+
+                        <circle cx="40" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="40" y="175" text-anchor="middle" fill="#fff" font-size="12">D</text>
+                        <circle cx="120" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="120" y="175" text-anchor="middle" fill="#fff" font-size="12">E</text>
+                        <circle cx="200" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="200" y="175" text-anchor="middle" fill="#fff" font-size="12">F</text>
+                        <circle cx="280" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="280" y="175" text-anchor="middle" fill="#fff" font-size="12">G</text>
+
+
+                        <line x1="150" y1="45" x2="80" y2="85" stroke="#a78bfa" stroke-width="2"/> <line x1="150" y1="45" x2="220" y2="85" stroke="#a78bfa" stroke-width="2"/> <line x1="80" y1="115" x2="40" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="80" y1="115" x2="120" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="220" y1="115" x2="200" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="220" y1="115" x2="280" y2="155" stroke="#a78bfa" stroke-width="2"/> </svg>
+                </div>
+            </div>
+            <span class="reference">Reference: Pages 317-322</span>
+        </div>
+
+        <div id="slide-6" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Binary Search Trees (BST) - Definition</h2>
+                <p class="text-xl md:text-2xl mb-4 animate-fade-in-up delay-100"><strong>Definition:</strong> A binary tree where each node <em>p</em> stores a key (and optionally a value) such that:</p>
+                <ul class="text-xl md:text-2xl text-gray-300 space-y-2 animate-fade-in-up delay-200">
+                    <li>Keys in the left subtree of <em>p</em> are less than <em>p</em>'s key.</li>
+                    <li>Keys in the right subtree of <em>p</em> are greater than <em>p</em>'s key.</li>
+                </ul>
+                <p class="text-xl md:text-2xl font-semibold mt-6 mb-3 animate-fade-in-up delay-300">Advantages:</p>
+                <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-400">
+                    <li>Efficient search, insertion, deletion (average $O(\log n)$ if balanced).</li>
+                    <li>Maintains element order.</li>
+                </ul>
+                <div class="diagram-container animate-fade-in-up delay-500">
+                    <h3 class="text-xl font-semibold mb-4 text-cyan-300">Binary Search Tree Diagram</h3>
+                    <svg width="300" height="200" viewBox="0 0 300 200" class="mx-auto">
+                        <circle cx="150" cy="30" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="150" y="35" text-anchor="middle" fill="#fff" font-size="12">8</text> <circle cx="80" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="80" y="105" text-anchor="middle" fill="#fff" font-size="12">3</text>
+                        <circle cx="220" cy="100" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="220" y="105" text-anchor="middle" fill="#fff" font-size="12">10</text>
+
+                        <circle cx="40" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="40" y="175" text-anchor="middle" fill="#fff" font-size="12">1</text>
+                        <circle cx="120" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="120" y="175" text-anchor="middle" fill="#fff" font-size="12">6</text>
+                        <circle cx="180" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="180" y="175" text-anchor="middle" fill="#fff" font-size="12">9</text>
+                        <circle cx="260" cy="170" r="15" fill="#818cf8" stroke="#a78bfa" stroke-width="2"/>
+                        <text x="260" y="175" text-anchor="middle" fill="#fff" font-size="12">14</text>
+
+                        <line x1="150" y1="45" x2="80" y2="85" stroke="#a78bfa" stroke-width="2"/> <line x1="150" y1="45" x2="220" y2="85" stroke="#a78bfa" stroke-width="2"/> <line x1="80" y1="115" x2="40" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="80" y1="115" x2="120" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="220" y1="115" x2="180" y2="155" stroke="#a78bfa" stroke-width="2"/> <line x1="220" y1="115" x2="260" y2="155" stroke="#a78bfa" stroke-width="2"/> </svg>
+                </div>
+            </div>
+            <span class="reference">Reference: Page 460</span>
+        </div>
+
+        <div id="slide-7" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">BST - Searching</h2>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-100">Algorithm:</p>
+                <ul class="text-lg md:text-xl text-gray-300 space-y-2 animate-fade-in-up delay-200">
+                    <li>Start at the root.</li>
+                    <li>Compare target key <em>k</em> with current node's key <em>p.key()</em>:
+                        <ul class="list-disc pl-8 mt-2">
+                            <li>If $k < p.key()$, search left subtree.</li>
+                            <li>If $k == p.key()$, key found.</li>
+                            <li>If $k > p.key()$, search right subtree.</li>
+                        </ul>
+                    </li>
+                    <li>If a null subtree is reached, key not found.</li>
+                </ul>
+                <p class="text-xl md:text-2xl font-semibold mt-6 animate-fade-in-up delay-300">Performance: $O(h)$, where <em>h</em> is height. $O(\log n)$ for balanced, $O(n)$ for skewed.</p>
+            </div>
+            <span class="reference">Reference: Pages 461-462</span>
+        </div>
+
+        <div id="slide-8" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">BST - Node Insertion</h2>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-100">Algorithm:</p>
+                <ul class="text-lg md:text-xl text-gray-300 space-y-2 animate-fade-in-up delay-200">
+                    <li>To insert key <em>k</em> (and associated value):</li>
+                    <li>Search for key <em>k</em> to find the leaf (or external node <em>z</em>) where <em>k</em> should be.</li>
+                    <li>If <em>k</em> is found at an existing node, policy for duplicates applies (e.g., update value, or as per book's approach, expand the node).</li>
+                    <li>If <em>k</em> is not found, add the new node as a child of the parent of <em>z</em> (the last internal node encountered during search).</li>
+                    <li>New nodes are always inserted effectively as new leaves.</li>
+                </ul>
+                <p class="text-xl md:text-2xl font-semibold mt-6 animate-fade-in-up delay-300">Performance: $O(h)$.</p>
+            </div>
+            <span class="reference">Reference: Pages 463-465</span>
+        </div>
+
+        <div id="slide-9" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">BST - Implementation Overview (Java)</h2>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-100">Node Structure (Conceptual):</p>
+                <ul class="text-lg md:text-xl text-gray-300 space-y-1 animate-fade-in-up delay-200">
+                    <li>Key, Value (optional).</li>
+                    <li>References: parent, left child, right child.</li>
+                </ul>
+            </div>
+            <span class="reference">Reference: Pages 466-470</span>
+        </div>
+
+        <div id="slide-10" class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">BST - Implementation Overview (Java)</h2>
+                <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-100">Class TreeMap (Book's Example for BST logic):</p>
+                <ul class="text-lg md:text-xl text-gray-300 space-y-1 animate-fade-in-up delay-200">
+                    <li>Uses a nested Node class.</li>
+                    <li>Maintains root reference and size.</li>
+                    <li>The book's TreeMap uses an inner BalanceableBinaryTree class to encapsulate tree operations like insertions and rotations.</li>
+                </ul>
+                <p class="text-xl md:text-2xl font-semibold mt-6 mb-3 animate-fade-in-up delay-300">Core Methods (Conceptual):</p>
+                <ul class="text-lg md:text-xl text-gray-300 space-y-1 animate-fade-in-up delay-400">
+                    <li><code>get(k)</code>: Searches for key k.</li>
+                    <li><code>put(k, v)</code>: Inserts key-value pair (k,v).</li>
+                    <li>(Briefly mention <code>remove(k)</code>)</li>
+                </ul>
+                <pre class="mt-8 text-left animate-fade-in-up delay-500"><code>
+// Node&lt;E&gt; (as Position&lt;E&gt;)
+//   E element; Node&lt;E&gt; parent, left, right;
+
+// TreeMap&lt;K,V&gt; -> uses BalanceableBinaryTree&lt;K,V&gt;
+//   BalanceableBinaryTree has Node&lt;Entry&lt;K,V&gt;&gt; root; int size;
+                </code></pre>
+            </div>
+            <span class="reference">Reference: Pages 466-470 (focus on the BST structure before balancing aspects)</span>
+        </div>
+
+        <div id="slide-11" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Question 1</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 1: In a Binary Search Tree (BST), the keys of the nodes in the left subtree of a node p are:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. Greater than or equal to the key of p</li>
+                        <li class="option p-2 rounded-lg">B. Less than the key of p</li>
+                        <li class="option p-2 rounded-lg">C. Equal to the key of p</li>
+                        <li class="option p-2 rounded-lg">D. Can be either smaller or larger than the key of p</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-12" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Answer 1</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 1: In a Binary Search Tree (BST), the keys of the nodes in the left subtree of a node p are:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. Greater than or equal to the key of p</li>
+                        <li class="option p-2 rounded-lg correct-answer">B. Less than the key of p</li>
+                        <li class="option p-2 rounded-lg">C. Equal to the key of p</li>
+                        <li class="option p-2 rounded-lg">D. Can be either smaller or larger than the key of p</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-13" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Question 2</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 2: In a proper binary tree (also called a full binary tree), each node has:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. No children or only one child</li>
+                        <li class="option p-2 rounded-lg">B. Only one child</li>
+                        <li class="option p-2 rounded-lg">C. Exactly 0 or 2 children</li>
+                        <li class="option p-2 rounded-lg">D. At most 3 children</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-14" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Answer 2</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 2: In a proper binary tree (also called a full binary tree), each node has:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. No children or only one child</li>
+                        <li class="option p-2 rounded-lg">B. Only one child</li>
+                        <li class="option p-2 rounded-lg correct-answer">C. Exactly 0 or 2 children</li>
+                        <li class="option p-2 rounded-lg">D. At most 3 children</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-15" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Question 3</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 3: The average time complexity of the search operation in a balanced BST is:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. O(n)</li>
+                        <li class="option p-2 rounded-lg">B. O(log n)</li>
+                        <li class="option p-2 rounded-lg">C. O(1)</li>
+                        <li class="option p-2 rounded-lg">D. O(n²)</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-16" class="slide">
+            <div class="slide-content text-left">
+                <h2 class="text-4xl md:text-5xl mb-6 animate-fade-in-up">Quick Quiz - Answer 3</h2>
+                <div class="mb-8 animate-fade-in-up delay-100">
+                    <p class="text-xl md:text-2xl font-semibold mb-3">Question 3: The average time complexity of the search operation in a balanced BST is:</p>
+                    <ul class="list-none p-0 m-0 text-lg md:text-xl space-y-2">
+                        <li class="option p-2 rounded-lg">A. O(n)</li>
+                        <li class="option p-2 rounded-lg correct-answer">B. O(log n)</li>
+                        <li class="option p-2 rounded-lg">C. O(1)</li>
+                        <li class="option p-2 rounded-lg">D. O(n²)</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+        <div id="slide-17" class="slide">
+            <div class="slide-content">
+                <h1 class="text-5xl md:text-6xl text-center mb-8 animate-fade-in-up">Thank You!</h1>
+                <p class="text-3xl md:text-4xl text-gray-300 animate-fade-in-up delay-100">Q&A</p>
+            </div>
+            <span class="reference"></span>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlideIndex = 0;
+
+        // Function to show a specific slide
+        function showSlide(index) {
+            // Ensure index is within bounds
+            if (index < 0) {
+                index = 0;
+            } else if (index >= slides.length) {
+                index = slides.length - 1;
+            }
+
+            // Hide all slides
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                // Remove animation classes to reset them for next activation
+                slide.querySelectorAll('.animate-fade-in-up').forEach(el => {
+                    el.classList.remove('animate-fade-in-up', 'delay-0', 'delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500', 'delay-600', 'delay-700');
+                });
+            });
+
+            // Show the target slide
+            const targetSlide = slides[index];
+            targetSlide.classList.add('active');
+
+            // Re-add animation classes to trigger them
+            targetSlide.querySelectorAll('.animate-fade-in-up').forEach((el, i) => {
+                el.classList.add('animate-fade-in-up');
+                // Apply a staggered delay
+                if (i === 0) el.classList.add('delay-0');
+                else if (i === 1) el.classList.add('delay-100');
+                else if (i === 2) el.classList.add('delay-200');
+                else if (i === 3) el.classList.add('delay-300');
+                else if (i === 4) el.classList.add('delay-400');
+                else if (i === 5) el.classList.add('delay-500');
+                else if (i === 6) el.classList.add('delay-600');
+                else if (i === 7) el.classList.add('delay-700');
+            });
+
+            currentSlideIndex = index;
+        }
+
+        // Navigate to the next slide
+        function nextSlide() {
+            showSlide(currentSlideIndex + 1);
+        }
+
+        // Navigate to the previous slide
+        function prevSlide() {
+            showSlide(currentSlideIndex - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Mouse click navigation
+        document.addEventListener('click', (event) => {
+            // Left click for previous slide
+            if (event.button === 0) { // 0 for left click
+                prevSlide();
+            }
+        });
+
+        document.addEventListener('contextmenu', (event) => {
+            event.preventDefault(); // Prevent default right-click context menu
+            // Right click for next slide
+            nextSlide();
+        });
+
+        // Initial display of the first slide
+        window.onload = () => {
+            showSlide(0);
+        };
+    </script>
+</body>
+</html>
