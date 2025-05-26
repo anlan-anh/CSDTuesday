@@ -323,10 +323,8 @@
                 <p class="text-xl md:text-2xl font-semibold mb-3 animate-fade-in-up delay-300">Properties:</p>
                 <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-400">
                     <li><strong>Proper (Full) BT:</strong> Each node has 0 or 2 children.</li>
-                    <li>Max nodes at level d is $2^d$.</li>
-                    <li>Min height for n nodes is $\Omega(\log n)$ (specifically, height is at least
-                        $\lceil\log_2(n+1)\rceil-1$ for n nodes or $\log_2 n$ if leaves are at level h and n is number
-                        of leaves for a proper BT).</li>
+                    <li>Max nodes at level d is 2ᵈ.</li>
+                    <li>Min height for n nodes is Ω(log n) (specifically, height is at least ⌈log₂(n+1)⌉-1 for n nodes or log₂ n if leaves are at level h and n is number of leaves for a proper BT).</li>
                 </ul>
                 <div class="diagram-container animate-fade-in-up delay-500">
                     <h3 class="text-xl font-semibold mb-4 text-cyan-300">Binary Tree Diagram</h3>
@@ -371,7 +369,7 @@
                 </ul>
                 <p class="text-xl md:text-2xl font-semibold mt-6 mb-3 animate-fade-in-up delay-300">Advantages:</p>
                 <ul class="text-lg md:text-xl text-gray-300 animate-fade-in-up delay-400">
-                    <li>Efficient search, insertion, deletion (average $O(\log n)$ if balanced).</li>
+                    <li>Efficient search, insertion, deletion (average O(log n) if balanced).</li>
                     <li>Maintains element order.</li>
                 </ul>
                 <div class="diagram-container animate-fade-in-up delay-500">
@@ -412,16 +410,14 @@
                 <ul class="text-lg md:text-xl text-gray-300 space-y-2 animate-fade-in-up delay-200">
                     <li>Start at the root.</li>
                     <li>Compare target key <em>k</em> with current node's key <em>p.key()</em>:
-                        <ul class="list-disc pl-8 mt-2">
-                            <li>If $k < p.key()$, search left subtree.</li>
-                            <li>If $k == p.key()$, key found.</li>
-                            <li>If $k > p.key()$, search right subtree.</li>
+                        <ul class="list-disc pl-8 mt-2">                            <li>If k < p.key(), search left subtree.</li>
+                            <li>If k == p.key(), key found.</li>
+                            <li>If k > p.key(), search right subtree.</li>
                         </ul>
                     </li>
                     <li>If a null subtree is reached, key not found.</li>
-                </ul>
-                <p class="text-xl md:text-2xl font-semibold mt-6 animate-fade-in-up delay-300">Performance: $O(h)$,
-                    where <em>h</em> is height. $O(\log n)$ for balanced, $O(n)$ for skewed.</p>
+                </ul>                <p class="text-xl md:text-2xl font-semibold mt-6 mb-3 animate-fade-in-up delay-300">Performance: O(h),
+                    where <em>h</em> is height. O(log n) for balanced, O(n) for skewed.</p>
             </div>
             <span class="reference">Reference: Pages 461-462</span>
         </div>
@@ -440,7 +436,7 @@
                         internal node encountered during search).</li>
                     <li>New nodes are always inserted effectively as new leaves.</li>
                 </ul>
-                <p class="text-xl md:text-2xl font-semibold mt-6 animate-fade-in-up delay-300">Performance: $O(h)$.</p>
+                <p class="text-xl md:text-2xl font-semibold mt-6 animate-fade-in-up delay-300">Performance: O(h).</p>
             </div>
             <span class="reference">Reference: Pages 463-465</span>
         </div>
